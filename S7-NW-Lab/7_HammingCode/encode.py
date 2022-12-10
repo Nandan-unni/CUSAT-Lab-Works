@@ -67,11 +67,6 @@ def main():
     message = pos_of_redundant_bits(message, rbits)
     emessage = val_of_redundant_bits(message, rbits)
     client.send(emessage.encode())
-    while True:
-        data = client.recv(1024).decode()
-        if not data:
-            break
-        print("SERVER >>", data)
     client.close()
 
 

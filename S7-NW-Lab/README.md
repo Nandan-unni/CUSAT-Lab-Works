@@ -15,3 +15,5 @@ Solutions to the VII Semester NW Lab Programs, 2019 Scheme <br /><br />
 **6.** CRC <br />
 
 **7.** Hamming Code <br />
+
+**8.** LZW Compression and Decompression <br />

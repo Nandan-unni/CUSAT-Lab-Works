@@ -27,6 +27,13 @@ def find_error(message, nr):
     return "0" * (4 - len(res)) + res
 
 
+def remove_error(message, error_pos):
+    error_pos = len(message) - error_pos
+    error_bit = message[error_pos]
+    correct_bit = "0" if error_bit == "1" else "1"
+    return message[:error_pos] + correct_bit + message[error_pos + 1 :]
+
+
 def main():
     server = socket.socket()
     server.bind((IP, PORT))
@@ -36,21 +43,18 @@ def main():
         message = client.recv(1024).decode()
         if not message:
             break
+        print("CLIENT >>", message)
         rbits = no_of_redundant_bits(message)
         error = find_error(message, rbits)
         check = "0" * rbits
-        print("CLIENT >>", message)
         if error == check:
             print("SERVER >> No error in data")
         else:
             error_pos = int(error, 2)
+            corrected_message = remove_error(message, error_pos)
             print("SERVER >> Error found at position", error_pos)
             print("SERVER >> Recieved data: ", message)
-            error_pos = len(message) - error_pos
-            error_bit = message[error_pos]
-            correct_bit = "0" if error_bit == "1" else "1"
-            message = message[:error_pos] + correct_bit + message[error_pos + 1 :]
-            print("SERVER >> Corrected data:", message)
+            print("SERVER >> Corrected data:", corrected_message)
     server.close()
 
 
