@@ -1,3 +1,9 @@
+import socket
+
+IP = "127.0.0.1"
+PORT = 5000
+
+
 def num_to_bin(num, max_len):
     bin_val = bin(num).replace("0b", "")
     # 10 to 0010
@@ -54,11 +60,19 @@ def val_of_redundant_bits(message, rbits):
 
 
 def main():
-    message = "1011001"
+    client = socket.socket()
+    client.connect((IP, PORT))
+    message = input("CLIENT >> ")
     rbits = no_of_redundant_bits(message)
     message = pos_of_redundant_bits(message, rbits)
-    enc_msg = val_of_redundant_bits(message, rbits)
-    print(enc_msg, len(enc_msg))
+    emessage = val_of_redundant_bits(message, rbits)
+    client.send(emessage.encode())
+    while True:
+        data = client.recv(1024).decode()
+        if not data:
+            break
+        print("SERVER >>", data)
+    client.close()
 
 
 main()

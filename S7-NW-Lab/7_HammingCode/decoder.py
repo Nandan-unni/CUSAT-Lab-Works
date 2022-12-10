@@ -1,3 +1,9 @@
+import socket
+
+IP = "127.0.0.1"
+PORT = 5000
+
+
 def no_of_redundant_bits(message):
     m = len(message)
     for r in range(m):
@@ -22,21 +28,30 @@ def find_error(message, nr):
 
 
 def main():
-    message = "10101001110"
-    rbits = no_of_redundant_bits(message)
-    error = find_error(message, rbits)
-    check = "0" * rbits
-    if error == check:
-        print("No error in data:", message)
-    else:
-        error_pos = int(error, 2)
-        print("Error found at position", error_pos)
-        print("Recieved data: ", message)
-        error_pos = len(message) - error_pos
-        error_bit = message[error_pos]
-        correct_bit = "0" if error_bit == "1" else "1"
-        message = message[:error_pos] + correct_bit + message[error_pos + 1 :]
-        print("Corrected data:", message)
+    server = socket.socket()
+    server.bind((IP, PORT))
+    server.listen(5)
+    while True:
+        client, addr = server.accept()
+        message = client.recv(1024).decode()
+        if not message:
+            break
+        rbits = no_of_redundant_bits(message)
+        error = find_error(message, rbits)
+        check = "0" * rbits
+        print("CLIENT >>", message)
+        if error == check:
+            print("SERVER >> No error in data")
+        else:
+            error_pos = int(error, 2)
+            print("SERVER >> Error found at position", error_pos)
+            print("SERVER >> Recieved data: ", message)
+            error_pos = len(message) - error_pos
+            error_bit = message[error_pos]
+            correct_bit = "0" if error_bit == "1" else "1"
+            message = message[:error_pos] + correct_bit + message[error_pos + 1 :]
+            print("SERVER >> Corrected data:", message)
+    server.close()
 
 
 main()
