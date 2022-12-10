@@ -38,40 +38,27 @@ def pos_of_redundant_bits(msg, rbits):
 
 def val_of_redundant_bits(message, rbits):
     msg_len = len(message)
-    error = ""
     for i in range(rbits):
-        # red_pos = 2**i
-        # red_pos will be 1, 2, 4, 8
-        # message[red_pos] conatins "x"
-        total_1 = 0
-        parity_val = "1"
+        red_pos = 2**i
+        no_of_1 = 0
+        parity_bit = "1"
         for j in range(msg_len):
             j_bin = num_to_bin(j, rbits)
-            # arr[-3] means 3rd bit from last
-            # eg: arr = "1011", arr[-3] is 0
             if j_bin[-1 * (i + 1)] == "1":
                 if message[j] == "1":
-                    total_1 += 1
-        if total_1 % 2 == 0:
-            parity_val = "0"
-        # replacing x with parity_val
-        # message = replace_from_last(message, red_pos, parity_val)
-        error += parity_val
-    return error
-
-
-# def calculate_error(message, rbit):
-#     msg_len = len(message)
-#     for i in range(rbit):
-#         for j in range(msg_len):
+                    no_of_1 += 1
+        if no_of_1 % 2 == 0:
+            parity_bit = "0"
+        message = replace_from_last(message, red_pos, parity_bit)
+    return message
 
 
 def main():
-    message = "10101101110"
+    message = "1011001"
     rbits = no_of_redundant_bits(message)
-    # message = pos_of_redundant_bits(message, rbits)
-    error = val_of_redundant_bits(message, rbits)
-    print("0000")
+    message = pos_of_redundant_bits(message, rbits)
+    enc_msg = val_of_redundant_bits(message, rbits)
+    print(enc_msg, len(enc_msg))
 
 
 main()
