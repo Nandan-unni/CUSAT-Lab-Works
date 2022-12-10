@@ -17,14 +17,14 @@ def compresser(message):
             compressed.append(table[curr[:-1]])
             curr = ch
     compressed.append(table[curr])
-    print("Compressed data :", compressed)
+    print("Compressed message :", compressed)
     return ";".join([str(i) for i in compressed])
 
 
 def main():
     client = socket.socket()
     client.connect((IP, PORT))
-    message = input("CLIENT >> ")
+    message = input("Enter message: ")
     message = compresser(message)
     client.send(message.encode())
     client.close()
