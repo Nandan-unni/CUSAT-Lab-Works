@@ -11,20 +11,20 @@ def no_of_redundant_bits(message):
             return r
 
 
-def find_error(message, nr):
-    n = len(message)
-    res = 0
+def find_error(message, rbits):
+    m = len(message)
+    error = 0
 
-    for i in range(nr):
+    for i in range(rbits):
         val = 0
-        for j in range(1, n + 1):
+        for j in range(1, m + 1):
             if j & (2**i) == (2**i):
                 val = val ^ int(message[-1 * j])
-        res = res + val * (10**i)
+        error = error + val * (10**i)
 
-    res = str(res)
+    error = str(error)
 
-    return "0" * (4 - len(res)) + res
+    return "0" * (4 - len(error)) + error
 
 
 def remove_error(message, error_pos):

@@ -32,8 +32,8 @@ def pos_of_redundant_bits(msg, rbits):
 
     for i in range(1, m + rbits + 1):
         if i == 2**pos_pow:
-            # filling reduntant bit pos with "x"
-            new_msg = new_msg + "x"
+            # filling reduntant bit pos with "0"
+            new_msg = new_msg + "0"
             pos_pow += 1
         else:
             new_msg = new_msg + msg[-1 * pos_from_last]
@@ -43,19 +43,15 @@ def pos_of_redundant_bits(msg, rbits):
 
 
 def val_of_redundant_bits(message, rbits):
-    msg_len = len(message)
+    m = len(message)
+
     for i in range(rbits):
-        red_pos = 2**i
-        no_of_1 = 0
-        parity_bit = "1"
-        for j in range(msg_len):
-            j_bin = num_to_bin(j, rbits)
-            if j_bin[-1 * (i + 1)] == "1":
-                if message[j] == "1":
-                    no_of_1 += 1
-        if no_of_1 % 2 == 0:
-            parity_bit = "0"
-        message = replace_from_last(message, red_pos, parity_bit)
+        val = 0
+        for j in range(1, m + 1):
+            if j & (2**i) == (2**i):
+                val = val ^ int(message[-1 * j])
+
+        message = message[: m - (2**i)] + str(val) + message[m - (2**i) + 1 :]
     return message
 
 
