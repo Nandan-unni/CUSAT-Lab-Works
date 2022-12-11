@@ -11,8 +11,8 @@ def decompresser(compressed):
     table = dict((i, chr(i)) for i in range(size))
     processed_msg = table[compressed[0]]
     prev = table[compressed[0]]
+    curr = ""
     for num in compressed[1:]:
-        curr = ""
         if num in table:
             curr = table[num]
         else:
