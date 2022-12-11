@@ -8,12 +8,15 @@ def main():
     server = socket.socket()
     server.bind((IP, PORT))
     server.listen(5)
+    client, addr = server.accept()
     while True:
-        client, addr = server.accept()
         data = client.recv(1024).decode()
         if not data:
             break
         print("CLIENT >>", data)
+        if data == "bye":
+            client.close()
+            break
         reply = input("SERVER >> ")
         client.send(reply.encode())
     server.close()

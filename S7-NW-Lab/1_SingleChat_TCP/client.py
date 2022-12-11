@@ -7,14 +7,16 @@ PORT = 5000
 def main():
     client = socket.socket()
     client.connect((IP, PORT))
-    message = input("CLIENT >> ")
-    client.send(message.encode())
     while True:
+        message = input("CLIENT >> ")
+        client.send(message.encode())
         data = client.recv(1024).decode()
         if not data:
             break
         print("SERVER >>", data)
-    client.close()
+        if data == "bye":
+            client.close()
+            break
 
 
 main()
