@@ -38,11 +38,9 @@ def main():
     server = socket.socket()
     server.bind((IP, PORT))
     server.listen(5)
-    while True:
-        client, addr = server.accept()
-        message = client.recv(1024).decode()
-        if not message:
-            break
+    client, addr = server.accept()
+    message = client.recv(1024).decode()
+    if message:
         print("CLIENT >>", message)
         rbits = no_of_redundant_bits(message)
         error = find_error(message, rbits)

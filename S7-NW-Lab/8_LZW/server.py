@@ -24,11 +24,9 @@ def main():
     server = socket.socket()
     server.bind((IP, PORT))
     server.listen(5)
-    while True:
-        client, addr = server.accept()
-        data = client.recv(1024).decode()
-        if not data:
-            break
+    client, addr = server.accept()
+    data = client.recv(1024).decode()
+    if data:
         data = decompresser(data)
         print("Decompressed data :", data)
     server.close()

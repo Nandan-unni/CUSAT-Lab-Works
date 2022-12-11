@@ -9,6 +9,7 @@ no_of_cars = 100
 
 
 def handle_client(client, addr):
+    global no_of_cars
     name = client_names[addr[0]]
     client.send(f"SERVER >> Welcome, {name}".encode())
     while True:
@@ -21,7 +22,7 @@ def handle_client(client, addr):
                     reply = str(no_of_cars) + " cars left. Send 'buy' to buy a car."
                     client.send(reply.encode())
                 elif "buy" in message:
-                    no_of_cars -= no_of_cars
+                    no_of_cars -= 1
                     reply = name + " bought a car."
                     client.send(reply.encode())
         except Exception as e:
