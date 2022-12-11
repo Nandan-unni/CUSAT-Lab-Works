@@ -8,15 +8,19 @@ def decompresser(compressed):
     compressed = [int(i) for i in compressed.split(";")]
     print("Recieved data :", compressed)
     size = 256
-    processed_msg = ""
     table = dict((i, chr(i)) for i in range(size))
-    prev = ""
-    for num in compressed:
-        processed_msg += table[num]
-        if not prev == "":
-            table[size] = prev + table[num][0]
-            size += 1
-        prev = table[num]
+    processed_msg = table[compressed[0]]
+    prev = table[compressed[0]]
+    for num in compressed[1:]:
+        curr = ""
+        if num in table:
+            curr = table[num]
+        else:
+            curr = prev + prev[0]
+        processed_msg += curr
+        table[size] = prev + curr[0]
+        size += 1
+        prev = curr
     return processed_msg
 
 
